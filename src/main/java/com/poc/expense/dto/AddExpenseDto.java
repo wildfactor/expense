@@ -1,15 +1,34 @@
 package com.poc.expense.dto;
 
 import com.poc.expense.entity.Expense;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
+
+/**
+ * The type Add expense dto.
+ */
 public class AddExpenseDto {
+    /**
+     * The Expenses.
+     */
     List<Expense> expenses;
+
+    /**
+     * Gets expenses.
+     *
+     * @return the expenses
+     */
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    /**
+     * Sets expenses.
+     *
+     * @param expenses the expenses
+     */
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
 }

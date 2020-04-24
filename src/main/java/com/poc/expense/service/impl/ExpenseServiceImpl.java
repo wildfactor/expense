@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -26,14 +27,15 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     private static final Logger logger = LoggerFactory.getLogger(ExpenseServiceImpl.class);
 
-    public ExpenseServiceImpl(){}
+    public ExpenseServiceImpl() {
+    }
 
     public static int noOfQuickServiceThreads = 2;
     private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads);
 
-    public void sendASynchronousMail(String toEmail,String subject,String text) throws MailException,RuntimeException{
+    public void sendASynchronousMail(String toEmail, String subject, String text) throws MailException, RuntimeException {
         logger.debug("inside sendASynchronousMail method");
-        SimpleMailMessage mail=new SimpleMailMessage();
+        SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("sohamchaudhary@gmail.com");
         mail.setTo(toEmail);
         mail.setSubject(subject);
@@ -41,10 +43,10 @@ public class ExpenseServiceImpl implements ExpenseService {
         quickService.submit(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     sender.send(mail);
-                }catch(Exception e){
-                    logger.error("Exception occurred while sending mails : ",e);
+                } catch (Exception e) {
+                    logger.error("Exception occurred while sending mails : ", e);
                 }
             }
         });
@@ -58,7 +60,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<Expense> saveExpense(AddExpenseDto addExpenseDto) {
         List<Expense> expenses = addExpenseDto.getExpenses();
-        for (Expense expense:expenses) {
+        for (Expense expense : expenses) {
             expenseRepository.save(expense);
 
         }
@@ -66,6 +68,16 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     }
 
+    public Optional<Expense> findById(Long id) {
+        return expenseRepository.findById(id);
+    }
 
+    public void deleteById(Long id) {
+        expenseRepository.deleteById(id);
+    }
+
+    public List<Expense> findByUserId(String userId){
+        return expenseRepository.getExpensesByUserId(userId);
+    }
 
 }
