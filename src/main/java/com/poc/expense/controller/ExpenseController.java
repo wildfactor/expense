@@ -2,6 +2,7 @@ package com.poc.expense.controller;
 
 import com.poc.expense.dto.AddExpenseDto;
 import com.poc.expense.entity.Expense;
+import com.poc.expense.exception.ExceptionController;
 import com.poc.expense.service.ExpenseService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * The type Expense controller.
+ */
 @RestController
 @RequestMapping("/api/expenses")
 public class ExpenseController {
@@ -24,6 +28,11 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
+    /**
+     * Send asynchronous mail response entity.
+     *
+     * @return the response entity
+     */
     @ApiOperation(value = "Api for send Asynchronous mail", response = ResponseEntity.class)
 
     @Deprecated
@@ -44,30 +53,49 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.OK).body("Mail sent successfully");
     }
 
+    /**
+     * Gets all expenses.
+     *
+     * @return the all expenses
+     */
     @GetMapping("")
-    public ResponseEntity<List<Expense>> getAllExpenses() {
+    public ResponseEntity<List<Expense>> getAllExpenses() throws ExceptionController {
         return ResponseEntity.ok(expenseService.getAllExpense());
     }
 
+    /**
+     * Add expense response entity.
+     *
+     * @param addExpenseDto the add expense dto
+     * @return the response entity
+     */
     @PostMapping("")
-    public ResponseEntity addExpense(@Valid @RequestBody AddExpenseDto addExpenseDto) {
+    public ResponseEntity addExpense(@Valid @RequestBody AddExpenseDto addExpenseDto) throws ExceptionController {
         expenseService.saveExpense(addExpenseDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
-    @DeleteMapping("/id")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
-        if (!expenseService.findById(id).isPresent()) {
-            logger.error("this id does not exist");
-            return ResponseEntity.badRequest().build();
-        }
+    /**
+     * Delete response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) throws ExceptionController {
         expenseService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Gets expenses by user.
+     *
+     * @param userId the user id
+     * @return the expenses by user
+     */
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Expense>> getExpensesByUser(@PathVariable String userId) {
+    public ResponseEntity<List<Expense>> getExpensesByUser(@PathVariable String userId) throws ExceptionController {
         return ResponseEntity.ok(expenseService.findByUserId(userId));
 
     }

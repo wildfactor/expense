@@ -2,6 +2,7 @@ package com.poc.expense.service.impl;
 
 import com.poc.expense.dto.AddExpenseDto;
 import com.poc.expense.entity.Expense;
+import com.poc.expense.exception.ExceptionController;
 import com.poc.expense.repository.ExpenseRepository;
 import com.poc.expense.service.ExpenseService;
 import org.slf4j.Logger;
@@ -17,6 +18,9 @@ import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * The type Expense service.
+ */
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
     @Autowired
@@ -27,9 +31,15 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     private static final Logger logger = LoggerFactory.getLogger(ExpenseServiceImpl.class);
 
+    /**
+     * Instantiates a new Expense service.
+     */
     public ExpenseServiceImpl() {
     }
 
+    /**
+     * The constant noOfQuickServiceThreads.
+     */
     public static int noOfQuickServiceThreads = 2;
     private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads);
 
