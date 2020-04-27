@@ -9,10 +9,17 @@ import java.util.List;
  * The type Add expense dto.
  */
 public class AddExpenseDto {
+
+
     /**
      * The Expenses.
      */
     List<Expense> expenses;
+
+    public AddExpenseDto(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
 
     /**
      * Gets expenses.
@@ -30,5 +37,12 @@ public class AddExpenseDto {
      */
     public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
+    }
+
+    @Override
+    public String toString() {
+        return "AddExpenseDto{" +
+                "expenses=" + expenses +
+                '}';
     }
 }

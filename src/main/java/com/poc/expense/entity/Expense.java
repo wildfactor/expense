@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 /**
  * The type Expense.
  */
+
 @Entity
 public class Expense {
 
@@ -24,6 +25,11 @@ public class Expense {
     private String expenseCategory;
 
     private String userId;
+
+    public Expense(){}
+
+    public Expense(long id, String sept2020, double v, String stationary, String s) {
+    }
 
     /**
      * Gets id.
